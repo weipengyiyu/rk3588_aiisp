@@ -1,0 +1,11 @@
+build*/
+run*/
+__pycache__/
+*.pyc
+bin/
+lib/
+dist/
+/validation/
+*.raw
+*.nv12
+*.ko

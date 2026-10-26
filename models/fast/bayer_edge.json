@@ -1,0 +1,20 @@
+{
+  "algorithm": "edge",
+  "learned": false,
+  "tile": 976,
+  "halo": 1,
+  "strength": 0.75,
+  "edge_threshold_raw12": 96.0,
+  "black_level": 0,
+  "white_level": 4095,
+  "channels": [
+    "R",
+    "Gr",
+    "Gb",
+    "B"
+  ],
+  "normalization": "raw12 / 4095",
+  "native_io": "FP16",
+  "onnx_sha256": "ed32a2736c3bcc57228bd5e336c530bd8d00ffdb4e273275d54cbbc2482cf9cf",
+  "rknn_sha256": "6a4a19f3042a1e413a6ac957b0cc21a2c9bfc27794aa6966a094d9ce562bf0a1"
+}

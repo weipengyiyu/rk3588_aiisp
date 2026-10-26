@@ -1,0 +1,18 @@
+{
+  "target": "rk3588",
+  "algorithm": "fixed Gaussian Bayer-plane convolution",
+  "learned": false,
+  "tile": 512,
+  "halo": 1,
+  "channels": [
+    "R",
+    "Gr",
+    "Gb",
+    "B"
+  ],
+  "normalization": "raw12 / 4095",
+  "strength": 0.5,
+  "onnx_sha256": "8575a0e55316ce8a81f3c121c90d641aaa820dc308eea75087541900fd68a9cc",
+  "toolkit_version": "2.3.2",
+  "rknn_sha256": "57bce4da7c2a0309d0716dd0fc5d36285b203d81c59faa7ebb217e31e20f30f4"
+}

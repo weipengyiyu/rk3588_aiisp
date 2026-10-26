@@ -1,0 +1,55 @@
+{
+  "real_frame_reference": {
+    "pixels": 3004672,
+    "max_error_raw12": 2,
+    "mean_error_raw12": 0.11976881336798159,
+    "changed_pixels": 2878663,
+    "passed": true
+  },
+  "synthetic": [
+    {
+      "noise_sigma_raw12": 4,
+      "input_flat_mse": 16.280466079711914,
+      "gaussian_flat_mse": 6.686305999755859,
+      "adaptive_flat_mse": 4.288332939147949,
+      "gaussian_edge_mse": 24466.193359375,
+      "adaptive_edge_mse": 9.689655303955078,
+      "flat_improves_over_gaussian": true
+    },
+    {
+      "noise_sigma_raw12": 8,
+      "input_flat_mse": 64.09382629394531,
+      "gaussian_flat_mse": 26.567676544189453,
+      "adaptive_flat_mse": 18.484851837158203,
+      "gaussian_edge_mse": 24498.0625,
+      "adaptive_edge_mse": 38.27047348022461,
+      "flat_improves_over_gaussian": true
+    },
+    {
+      "noise_sigma_raw12": 16,
+      "input_flat_mse": 257.5657958984375,
+      "gaussian_flat_mse": 106.25636291503906,
+      "adaptive_flat_mse": 88.13818359375,
+      "gaussian_edge_mse": 24452.564453125,
+      "adaptive_edge_mse": 184.42025756835938,
+      "flat_improves_over_gaussian": true
+    },
+    {
+      "noise_sigma_raw12": 32,
+      "input_flat_mse": 1025.6390380859375,
+      "gaussian_flat_mse": 417.1119079589844,
+      "adaptive_flat_mse": 490.0880432128906,
+      "gaussian_edge_mse": 24844.154296875,
+      "adaptive_edge_mse": 777.038818359375,
+      "flat_improves_over_gaussian": false
+    }
+  ],
+  "nv12": {
+    "width": 1936,
+    "height": 1552,
+    "y_min": 15,
+    "y_max": 236,
+    "y_mean": 54.981224060058594
+  },
+  "limitation": "Synthetic noise/step oracle is not a trained sensor-noise model or real-scene ground-truth quality certification."
+}

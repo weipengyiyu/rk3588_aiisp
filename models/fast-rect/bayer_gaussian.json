@@ -1,0 +1,21 @@
+{
+  "algorithm": "gaussian",
+  "learned": false,
+  "tile": 976,
+  "tile_height": 784,
+  "halo": 1,
+  "strength": 1.0,
+  "edge_threshold_raw12": 96.0,
+  "black_level": 0,
+  "white_level": 4095,
+  "channels": [
+    "R",
+    "Gr",
+    "Gb",
+    "B"
+  ],
+  "normalization": "raw12 / 4095",
+  "native_io": "FP16",
+  "onnx_sha256": "1ea215bd776a91e1ce00681bf1157d130fcb8bdc2891f1d0b7d84c406504568e",
+  "rknn_sha256": "dbb9b0e422d1b3079e83c84e99e9566219a01e30b13950449ebb34adc5892c12"
+}
