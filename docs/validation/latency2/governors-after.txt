@@ -1,0 +1,3 @@
+/sys/devices/system/cpu/cpufreq/policy0/scaling_governor schedutil
+/sys/devices/system/cpu/cpufreq/policy4/scaling_governor schedutil
+/sys/devices/system/cpu/cpufreq/policy6/scaling_governor schedutil

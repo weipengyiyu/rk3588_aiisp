@@ -1,5 +1,7 @@
 # 模型接口合同
 
+新原生路径支持 `--bayer-pack 2`：2×2 个 Bayer 单元打包为 16 通道，原生 Tensor 可为跨 channel-block 的 NC1HWC2，几何和 packing 必须匹配模型清单。`--cpu-threads` 只并行 pre/post 的行块；NPU 仍是同步单次调用。见 [第二轮分析](LATENCY_ANALYSIS_20261026.md)。
+
 本页描述默认 `rknn` FP32 适配器；新增 `rknn-native` 的原生 FP16、矩形张量和边缘 post 合同见 [快速路径](FAST_PATH.md)。
 
 ## 输入输出

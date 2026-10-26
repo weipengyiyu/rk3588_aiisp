@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "mode": "rknn-native",
+  "sensor": "imx623", "width": 1936, "height": 1552,
+  "bayer": "rggb", "raw_bits": 12, "halo": 1,
+  "black_level": 0.000, "white_level": 4095.000,
+  "tile_width": 488, "tile_height": 392,
+  "bayer_pack": 2,
+  "cpu_threads": 4,
+  "post_filter": "edge", "edge_strength": 0.750, "edge_threshold": 96.000,
+  "tiles": 300,
+  "mean_pre_ms": 1.904,
+  "mean_backend_ms": 2.681,
+  "mean_post_ms": 2.886,
+  "denoise_p50_ms": 7.389,
+  "denoise_p95_ms": 9.391,
+  "denoise_max_ms": 12.516,
+  "raw_to_nv12_p50_ms": 23.843,
+  "raw_to_nv12_p95_ms": 25.797,
+  "mean_unpack_ms": 0.824,
+  "mean_pack_ms": 3.996,
+  "mean_isp_ms": 10.806,
+  "completed_frames": 300, "npu_calls": 300,
+  "drained_frames": 0, "sensor_sequence_gaps": 0,
+  "elapsed_ms": 14320.232, "mean_denoise_ms": 7.958,
+  "completed_fps_including_startup": 20.949,
+  "completed_fps_after_first": 30.018,
+  "execution": "live",
+  "yuv_format": "NV12", "yuv_stride": 1936,
+  "error": ""
+}
+{
+  "restored": true,
+  "errors": []
+}
+PASS: byte-exact RAW A/B, thread count equivalence, model rejection, SIGINT and recovery
+PASS: media topology and CPU governors restored; no checked kernel error patterns
+tensor=raw dims=4 [1,392,488,16,] fmt=1 type=1 quant=2 elements=3060736
+tensor=denoised dims=4 [1,16,392,488,] fmt=0 type=1 quant=2 elements=3060736
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=488
+native FP16 cached I/O: channels=16 input_bytes=6121472 output_bytes=6121472
+completed=1 npu_calls=1 elapsed_ms=62.0182
+tensor=raw dims=4 [1,392,488,16,] fmt=1 type=1 quant=2 elements=3060736
+tensor=denoised dims=4 [1,16,392,488,] fmt=0 type=1 quant=2 elements=3060736
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=488
+native FP16 cached I/O: channels=16 input_bytes=6121472 output_bytes=6121472
+completed=1 npu_calls=1 elapsed_ms=52.9998

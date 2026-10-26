@@ -63,6 +63,8 @@ struct Stats {
     std::string sensor="imx623",bayer="rggb";
     std::string post_filter="none";
     int tile=512,tile_height=512;
+    int bayer_pack=1;
+    int cpu_threads=1;
     float edge_strength=0.75f,edge_threshold=96;
     double pre_ms=0,backend_ms=0,post_ms=0,unpack_ms=0,pack_ms=0,isp_ms=0;
     uint64_t tiles=0;
@@ -92,6 +94,8 @@ struct Stats {
          <<"  \"bayer\": \""<<bayer<<"\", \"raw_bits\": 12, \"halo\": "<<halo<<",\n"
          <<"  \"black_level\": "<<black_level<<", \"white_level\": "<<white_level<<",\n"
          <<"  \"tile_width\": "<<tile<<", \"tile_height\": "<<tile_height<<",\n"
+         <<"  \"bayer_pack\": "<<bayer_pack<<",\n"
+         <<"  \"cpu_threads\": "<<cpu_threads<<",\n"
          <<"  \"post_filter\": \""<<post_filter<<"\", \"edge_strength\": "<<edge_strength<<", \"edge_threshold\": "<<edge_threshold<<",\n"
          <<"  \"tiles\": "<<tiles<<",\n"
          <<"  \"mean_pre_ms\": "<<(frames?pre_ms/frames:0)<<",\n"
@@ -123,6 +127,8 @@ int main(int argc,char** argv) {
         {"--width","1936"},{"--height","1552"},{"--sensor","imx623"},{"--bayer","rggb"},
         {"--halo","1"},{"--black-level","0"},{"--white-level","4095"},{"--mode","rknn"},{"--model",""},{"--tile","512"},{"--tile-height","0"},{"--strength","0.5"},
         {"--post-filter","none"},{"--edge-strength","0.75"},{"--edge-threshold","96"},
+        {"--bayer-pack","1"},
+        {"--cpu-threads","1"},
         {"--frames","30"},{"--timeout-ms","5000"},{"--startup-timeout-ms","15000"},
         {"--capture",""},{"--rawrd",""},{"--isp",""},{"--yuv",""},
         {"--storage","compact"},{"--input-raw",""},{"--input-stride","0"},
@@ -139,7 +145,7 @@ int main(int argc,char** argv) {
                          <<"Geometry: --sensor imx623 --width 1936 --height 1552 --bayer rggb|bggr|grbg|gbrg\n"
                          <<"Model contract: --halo 1 --black-level 0 --white-level 4095\n"
                          <<"Backend: --mode rknn|rknn-native|bypass|cpu-reference --model FILE --tile 512\n"
-                         <<"Fast native: --tile 976 --tile-height 784 --post-filter edge --edge-strength 0.75 --edge-threshold 96\n"
+                         <<"Fast native: --tile 488 --tile-height 392 --bayer-pack 2 --cpu-threads 4 --post-filter edge\n"
                          <<"Live: --capture NODE --rawrd NODE --isp SUBDEV --yuv NODE --frames 30\n"
                          <<"Outputs: --json FILE --output-yuv FILE --dump-input FILE --dump-output FILE\n";
                 return 0;
@@ -162,6 +168,8 @@ int main(int argc,char** argv) {
             throw std::runtime_error("width/height must be even and within [2,8192]");
         aiisp::ProcessingConfig config;
         config.tile=t; config.tile_height=integer(a["--tile-height"]);config.halo=integer(a["--halo"]);
+        config.bayer_pack=integer(a["--bayer-pack"]);
+        config.cpu_threads=integer(a["--cpu-threads"]);
         if(a["--post-filter"]!="none" && a["--post-filter"]!="edge")throw std::runtime_error("post-filter must be none or edge");
         config.edge_post=a["--post-filter"]=="edge";
         config.edge_strength=number(a["--edge-strength"]);config.edge_threshold=number(a["--edge-threshold"]);
@@ -173,8 +181,10 @@ int main(int argc,char** argv) {
         stats.width=width; stats.height=height; stats.sensor=a["--sensor"]; stats.bayer=a["--bayer"];
         stats.halo=config.halo; stats.black_level=config.black_level; stats.white_level=config.white_level;
         stats.tile=config.tile;stats.tile_height=config.rows();stats.post_filter=a["--post-filter"];
+        stats.bayer_pack=config.bayer_pack;
+        stats.cpu_threads=config.cpu_threads;
         stats.edge_strength=config.edge_strength;stats.edge_threshold=config.edge_threshold;
-        aiisp::RawPipeline pipeline(config,aiisp::make_backend(a["--mode"],a["--model"],t,strength,config.tile_height));
+        aiisp::RawPipeline pipeline(config,aiisp::make_backend(a["--mode"],a["--model"],t,strength,config.tile_height,config.bayer_pack));
         std::vector<uint16_t> input,filtered;
         if(!a["--input-raw"].empty()) {
             auto bytes=read_file(a["--input-raw"]);

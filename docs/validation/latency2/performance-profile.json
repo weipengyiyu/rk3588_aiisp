@@ -1,0 +1,13 @@
+{
+  "cpu_affinity": [
+    4,
+    5,
+    6,
+    7
+  ],
+  "governor": "performance",
+  "original_governors": {
+    "/sys/devices/system/cpu/cpufreq/policy4/scaling_governor": "schedutil",
+    "/sys/devices/system/cpu/cpufreq/policy6/scaling_governor": "schedutil"
+  }
+}

@@ -9,7 +9,8 @@ using Clock=std::chrono::steady_clock;
 double ms(Clock::time_point t) { return std::chrono::duration<double,std::milli>(Clock::now()-t).count(); }
 }
 RawPipeline::RawPipeline(ProcessingConfig config,std::unique_ptr<InferenceBackend> backend):
-    config_(config),pre_(config),post_(config),backend_(std::move(backend)) {
+    config_(config),executor_(config.cpu_threads>1?std::make_shared<RowExecutor>(config.cpu_threads):nullptr),
+    pre_(config,executor_),post_(config,executor_),backend_(std::move(backend)) {
     if(!config_.bypass && !backend_) throw std::runtime_error("inference backend is required");
     if(config_.bypass && backend_) throw std::runtime_error("bypass must not create an inference backend");
 }
@@ -22,9 +23,11 @@ void RawPipeline::process_into(const std::vector<uint16_t>& input,int w,int h,Fr
         throw std::runtime_error("pipeline requires an even-sized unpacked RAW12 image");
     result.metadata=metadata; result.width=w; result.height=h; result.bayer=config_.bayer;result.timings={};
     if(config_.edge_post && (!backend_ || !backend_->native_io()))throw std::runtime_error("edge post requires native FP16 backend and a pure Gaussian model");
+    if(config_.bayer_pack!=1 && (!backend_ || !backend_->native_io()))throw std::runtime_error("packed Bayer requires native FP16 inference");
     if(config_.bypass) {result.raw=input; return;}
     result.raw.resize(input.size());
-    const int step=config_.tile-2*config_.halo,rows=config_.rows()-2*config_.halo;
+    const int step=(config_.tile-2*config_.halo)*config_.bayer_pack;
+    const int rows=(config_.rows()-2*config_.halo)*config_.bayer_pack;
     for(int y=0;y<h/2;y+=rows) for(int x=0;x<w/2;x+=step) {
         const TileRegion region{x,y,std::min(step,w/2-x),std::min(rows,h/2-y)};
         auto tick=Clock::now();

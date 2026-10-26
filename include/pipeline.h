@@ -18,6 +18,7 @@ struct ProcessedFrame {
 };
 class RawPipeline {
     ProcessingConfig config_;
+    std::shared_ptr<RowExecutor> executor_;
     Preprocessor pre_;
     Postprocessor post_;
     std::unique_ptr<InferenceBackend> backend_;

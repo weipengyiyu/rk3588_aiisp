@@ -1,0 +1,9 @@
+layout=nhwc input_bytes=6121472 output_bytes=6121472 output_fmt=1 dims=1,784,976,4,
+pre_heap_ms=3.7192
+pre_rknn_ms=3.66023
+run_ms=19.9513
+perf_query_rc=0 kernel_us=20004
+post_heap_ms=7.75438
+post_rknn_ms=7.72214
+post_no_edge_ms=4.54992
+memcpy_to_rknn_ms=0.798363

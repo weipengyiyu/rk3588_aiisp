@@ -1,6 +1,8 @@
 # RK3588 RAW → pre → NPU → post → ISP 框架
 
-2026-10-26：已在 RK3588 / IMX623 上验证完整通路，并增加原生 FP16 快速路径。300 帧实测整帧降噪平均 20.446 ms、P95 20.489 ms；此项含 pre、NPU、post，RAW 解包到 NV12 返回的 P95 为 36.865 ms。测试使用可自动恢复的 CPU performance 配置。详见 [快速路径](docs/FAST_PATH.md) 和 [最新板端记录](docs/BOARD_VALIDATION_20261026.md)。
+最新第二轮优化：IMX623 全帧降噪平均 **7.958 ms**、P95 **9.391 ms**，pre 1.904 ms、RKNN backend 2.681 ms、post 2.886 ms；使用 16 通道打包和四个 CPU 线程，保持完整 RAW12 分辨率。RAW→NV12 的 P95 为 25.797 ms。详见 [性能与 TIDL 参考分析](docs/LATENCY_ANALYSIS_20261026.md)。
+
+第一轮历史结果（2026-10-26）：已在 RK3588 / IMX623 上验证完整通路，并增加原生 FP16 快速路径。300 帧实测整帧降噪平均 20.446 ms、P95 20.489 ms；此项含 pre、NPU、post，RAW 解包到 NV12 返回的 P95 为 36.865 ms。测试使用可自动恢复的 CPU performance 配置。详见 [快速路径](docs/FAST_PATH.md) 和 [第一轮板端记录](docs/BOARD_VALIDATION_20261026.md)。
 
 位置：`/home/logic/rk3588-sdk/rk3588_jm/external/rk3588-aiisp`。
 
@@ -44,7 +46,7 @@ ctest --test-dir build-host --output-on-failure
 bash build.sh
 
 # 生成 RK3588 FP16 示例模型；当前 SDK 主机已有此环境
-/home/logic/venv-rknn/bin/python models/build_baseline.py --tile 512
+/home/logic/.cache/rk3588-aiisp-toolkit-venv/bin/python models/build_baseline.py --tile 512
 
 # 生成板端包，包含 bin、RKNN Runtime、模型和运行脚本
 bash package.sh
@@ -67,7 +69,7 @@ bash package.sh
 
 ```bash
 bash build.sh
-/home/logic/venv-rknn/bin/python models/build_baseline.py --tile 512
+/home/logic/.cache/rk3588-aiisp-toolkit-venv/bin/python models/build_baseline.py --tile 512
 bash package.sh
 ```
 
@@ -143,4 +145,4 @@ auto output = isp.submit(processed, 5000, true);
 
 示例模型为固定权重 3×3 高斯卷积，未进行 Sensor 数据训练，不代表生产画质。尚未接入自动 AE/AWB/AF、Sensor 专用 IQ、时域模型、HDR、全程 DMA-BUF 共享或 RTSP 编码。曝光增益元数据当前只传递，示例后端不消费。黑电平处理与 ISP BLC 的职责必须在接入生产模型时统一，避免重复扣除。
 
-模型接入规则见 [模型接口合同](docs/MODEL_CONTRACT.md)，本次验证见 [验证记录](docs/VALIDATION.md)。
+模型接入规则见 [模型接口合同](docs/MODEL_CONTRACT.md)，历史验证见 [验证记录](docs/VALIDATION.md)，最新记录见 [第二轮优化详解](docs/LATENCY_ANALYSIS_20261026.md)。

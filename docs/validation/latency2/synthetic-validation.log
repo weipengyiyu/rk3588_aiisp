@@ -1,0 +1,5 @@
+tensor=raw dims=4 [1,392,488,16,] fmt=1 type=1 quant=2 elements=3060736
+tensor=denoised dims=4 [1,16,392,488,] fmt=0 type=1 quant=2 elements=3060736
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=488
+native FP16 cached I/O: channels=16 input_bytes=6121472 output_bytes=6121472
+completed=1 npu_calls=1 elapsed_ms=52.9435

@@ -143,13 +143,14 @@ def performance_profile(enabled,errors,output_dir):
         try:os.sched_setaffinity(0,original_affinity)
         except OSError as e:errors.append(f'CPU affinity restore: {e}')
 
-def validate_edge_model(path,tile,rows,black,white):
+def validate_edge_model(path,tile,rows,black,white,bayer_pack=1):
     meta=json.loads(path.with_suffix('.json').read_text())
     if (meta.get('algorithm'),meta.get('strength'),meta.get('tile'),meta.get('tile_height'),
         meta.get('black_level'),meta.get('white_level')) != ('gaussian',1.0,tile,rows,black,white):
         raise RuntimeError('edge post requires its pure Gaussian model and matching geometry/RAW levels')
     if meta.get('rknn_sha256')!=hashlib.sha256(path.read_bytes()).hexdigest():
         raise RuntimeError('edge post model hash does not match its manifest')
+    if meta.get('bayer_pack',1)!=bayer_pack:raise RuntimeError('Bayer packing does not match the model manifest')
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
@@ -170,6 +171,8 @@ def main():
     p.add_argument('--dump-last',action='store_true')
     p.add_argument('--tile',type=int,default=512)
     p.add_argument('--tile-height',type=int,default=0,help='0=square; use 784 for the full-frame fast models')
+    p.add_argument('--bayer-pack',type=int,choices=[1,2],default=1)
+    p.add_argument('--cpu-threads',type=int,choices=[1,2,3,4],default=1)
     p.add_argument('--post-filter',choices=['none','edge'],default='none')
     p.add_argument('--edge-strength',type=float,default=0.75)
     p.add_argument('--edge-threshold',type=float,default=96)
@@ -192,7 +195,7 @@ def main():
     if a.mode in ('rknn','rknn-native') and not a.model.is_file(): raise RuntimeError('missing RKNN model: '+str(a.model))
     if a.post_filter=='edge':
         if a.mode!='rknn-native' or a.halo!=1:raise RuntimeError('edge post requires native mode and halo 1')
-        validate_edge_model(a.model,a.tile,rows,a.black_level,a.white_level)
+        validate_edge_model(a.model,a.tile,rows,a.black_level,a.white_level,a.bayer_pack)
     a.output_dir.mkdir(parents=True,exist_ok=True)
     media=plan['isp_media']; restore=[]; child=None; signalled=[False]
     def interrupted(sig,_):
@@ -219,6 +222,8 @@ def main():
             command=[str(a.binary),'--mode',a.mode,'--model',str(a.model),'--frames',str(a.frames),
                 '--tile',str(a.tile),'--strength',str(a.strength),'--storage',plan['storage'],
                 '--tile-height',str(a.tile_height),'--post-filter',a.post_filter,
+                '--bayer-pack',str(a.bayer_pack),
+                '--cpu-threads',str(a.cpu_threads),
                 '--edge-strength',str(a.edge_strength),'--edge-threshold',str(a.edge_threshold),
                 '--width',str(a.width),'--height',str(a.height),'--sensor',a.sensor,'--bayer',a.bayer,
                 '--halo',str(a.halo),'--black-level',str(a.black_level),'--white-level',str(a.white_level),

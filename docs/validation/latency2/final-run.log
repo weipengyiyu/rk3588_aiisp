@@ -1,0 +1,54 @@
+{
+  "sensor": "m01_back_imx623 7-001a",
+  "sensor_subdev": "/dev/v4l-subdev2",
+  "capture_media": "/dev/media1",
+  "isp_media": "/dev/media2",
+  "capture": "/dev/video11",
+  "rawrd": "/dev/video27",
+  "isp": "/dev/v4l-subdev3",
+  "yuv": "/dev/video22",
+  "storage": "compact",
+  "width": 1936,
+  "height": 1552,
+  "bayer": "rggb",
+  "raw_bits": 12
+}
+tensor=raw dims=4 [1,392,488,16,] fmt=1 type=1 quant=2 elements=3060736
+tensor=denoised dims=4 [1,16,392,488,] fmt=0 type=1 quant=2 elements=3060736
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=488
+native FP16 cached I/O: channels=16 input_bytes=6121472 output_bytes=6121472
+/dev/video11 1936x1552 stride=3072 size=4767744 buffers=4
+/dev/video27 1936x1552 stride=3872 size=6009344 buffers=2
+/dev/video22 1936x1552 stride=1936 size=4507008 buffers=3
+frame=1 sensor_seq=4294967295 yuv_seq=4294967295 npu_calls=1 denoise_mean_ms=12.5158
+frame=10 sensor_seq=7 yuv_seq=7 npu_calls=10 denoise_mean_ms=8.50209
+frame=20 sensor_seq=17 yuv_seq=17 npu_calls=20 denoise_mean_ms=8.56519
+frame=30 sensor_seq=27 yuv_seq=27 npu_calls=30 denoise_mean_ms=8.48679
+frame=40 sensor_seq=37 yuv_seq=37 npu_calls=40 denoise_mean_ms=8.53231
+frame=50 sensor_seq=47 yuv_seq=47 npu_calls=50 denoise_mean_ms=8.43921
+frame=60 sensor_seq=57 yuv_seq=57 npu_calls=60 denoise_mean_ms=8.3694
+frame=70 sensor_seq=67 yuv_seq=67 npu_calls=70 denoise_mean_ms=8.369
+frame=80 sensor_seq=77 yuv_seq=77 npu_calls=80 denoise_mean_ms=8.25354
+frame=90 sensor_seq=87 yuv_seq=87 npu_calls=90 denoise_mean_ms=8.2905
+frame=100 sensor_seq=97 yuv_seq=97 npu_calls=100 denoise_mean_ms=8.33989
+frame=110 sensor_seq=107 yuv_seq=107 npu_calls=110 denoise_mean_ms=8.33146
+frame=120 sensor_seq=117 yuv_seq=117 npu_calls=120 denoise_mean_ms=8.26508
+frame=130 sensor_seq=127 yuv_seq=127 npu_calls=130 denoise_mean_ms=8.27041
+frame=140 sensor_seq=137 yuv_seq=137 npu_calls=140 denoise_mean_ms=8.23785
+frame=150 sensor_seq=147 yuv_seq=147 npu_calls=150 denoise_mean_ms=8.19719
+frame=160 sensor_seq=157 yuv_seq=157 npu_calls=160 denoise_mean_ms=8.16673
+frame=170 sensor_seq=167 yuv_seq=167 npu_calls=170 denoise_mean_ms=8.14488
+frame=180 sensor_seq=177 yuv_seq=177 npu_calls=180 denoise_mean_ms=8.13206
+frame=190 sensor_seq=187 yuv_seq=187 npu_calls=190 denoise_mean_ms=8.09732
+frame=200 sensor_seq=197 yuv_seq=197 npu_calls=200 denoise_mean_ms=8.07689
+frame=210 sensor_seq=207 yuv_seq=207 npu_calls=210 denoise_mean_ms=8.0497
+frame=220 sensor_seq=217 yuv_seq=217 npu_calls=220 denoise_mean_ms=8.04131
+frame=230 sensor_seq=227 yuv_seq=227 npu_calls=230 denoise_mean_ms=8.02532
+frame=240 sensor_seq=237 yuv_seq=237 npu_calls=240 denoise_mean_ms=8.02483
+frame=250 sensor_seq=247 yuv_seq=247 npu_calls=250 denoise_mean_ms=8.00548
+frame=260 sensor_seq=257 yuv_seq=257 npu_calls=260 denoise_mean_ms=7.98514
+frame=270 sensor_seq=267 yuv_seq=267 npu_calls=270 denoise_mean_ms=7.9745
+frame=280 sensor_seq=277 yuv_seq=277 npu_calls=280 denoise_mean_ms=7.96041
+frame=290 sensor_seq=287 yuv_seq=287 npu_calls=290 denoise_mean_ms=7.9502
+frame=300 sensor_seq=297 yuv_seq=297 npu_calls=300 denoise_mean_ms=7.95752
+completed=300 npu_calls=300 elapsed_ms=14320.2

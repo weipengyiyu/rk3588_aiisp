@@ -1,0 +1,20 @@
+query=1 rc=0 fmt=1 type=1 dims=1,392,488,16, size=6121472 stride_size=6121472 w_stride=488
+query=2 rc=0 fmt=0 type=1 dims=1,16,392,488, size=6121472 stride_size=6121472 w_stride=0
+query=8 rc=0 fmt=2 type=1 dims=1,2,392,488,8, size=6121472 stride_size=6121472 w_stride=488
+query=9 rc=0 fmt=2 type=1 dims=1,2,392,488,8, size=6121472 stride_size=6121472 w_stride=0
+query=10 rc=0 fmt=2 type=1 dims=1,2,392,488,8, size=6121472 stride_size=6121472 w_stride=488
+query=11 rc=0 fmt=1 type=1 dims=1,392,488,16, size=6121472 stride_size=6121472 w_stride=0
+run=0 ms=2.58651
+run=1 ms=2.53343
+run=2 ms=2.53168
+run=3 ms=2.52906
+run=4 ms=2.5311
+run=5 ms=2.53081
+run=6 ms=2.52818
+run=7 ms=2.52964
+run=8 ms=2.52964
+run=9 ms=2.53081
+run=10 ms=2.52935
+run=11 ms=2.53606
+center block 0: 2c00 3000 3400 3800 2c00 3000 3400 3800
+center block 1: 2c00 3000 3400 3800 2c00 3000 3400 3800

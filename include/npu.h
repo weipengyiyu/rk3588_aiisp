@@ -18,5 +18,5 @@ public:
     virtual void run_native() { throw std::runtime_error("native I/O unavailable"); }
 };
 std::unique_ptr<InferenceBackend> make_backend(const std::string& mode,const std::string& model,
-                                             int tile,float reference_strength=0.5f,int tile_height=0);
+                                             int tile,float reference_strength=0.5f,int tile_height=0,int bayer_pack=1);
 }

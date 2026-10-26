@@ -1,0 +1,12 @@
+PASS: canonical Bayer order, partial tiles, halo 1/2, scalar oracle, levels, metadata, bypass and hard failures
+layout=nc input_bytes=6121472 output_bytes=24485888 output_fmt=2 dims=1,2,784,976,8,
+pre_heap_ms=2.58567
+pre_rknn_ms=2.59294
+run_ms=8.38417
+perf_query_rc=0 kernel_us=8386
+post_heap_ms=5.97871
+post_rknn_ms=5.98907
+post_no_edge_ms=3.26958
+memcpy_to_rknn_ms=0.795885
+
+same_input_max_difference_raw12 0

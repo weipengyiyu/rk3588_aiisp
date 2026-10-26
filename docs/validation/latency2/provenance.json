@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-26",
+  "timezone": "Asia/Shanghai",
+  "baseline_commit": "6a47d6c6ed901a4ed1d3d78d24dfdaa5cf88585e",
+  "target": {
+    "soc": "RK3588",
+    "sensor": "IMX623",
+    "width": 1936,
+    "height": 1552,
+    "raw_bits": 12,
+    "bayer": "RGGB",
+    "sensor_fps": 30,
+    "kernel": "5.10.226 #1 SMP Mon Oct 26 15:50:27 CST 2026",
+    "rknn_runtime": "2.3.0",
+    "rknpu_driver": "0.9.8"
+  },
+  "build": {
+    "language": "C++17",
+    "compiler": "aarch64-linux-gnu-g++ 11.4.0",
+    "build_type": "Release",
+    "core_cpu_arch": "armv8.2-a+fp16",
+    "rknn_toolkit2": "2.3.0",
+    "onnx": "1.16.1"
+  },
+  "performance": {
+    "cpu_affinity": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "cpu_governor": "performance",
+    "original_cpu_governor": "schedutil",
+    "npu_governor_changed": false,
+    "worker_threads": 4,
+    "frames": 300,
+    "warmup_frames_discarded_from_denoise_stats": 0
+  },
+  "sha256": {
+    "binary": "303b9e1db4cff47be0d8cd25bc4191773ff55bc145cbbdaa626272cb67503641",
+    "rknn_model": "38bb73d245c38a11ecb3070eda836a70e9311169370a82f8f410d2a043eb667b",
+    "onnx_model": "4449f5c71fb9d3dde6f31829f403cd9b55cf8f7f8ab0d4674c55994ed65a39fb",
+    "ab_raw_input": "d86554c6834d074419e1efd95193ea5e4f6f864056d1cf3dbfda07807a183023",
+    "baseline_raw_output": "3c55bbb54cba785d4b5ebc925d96850bdeee3dc931a06a6bdc7625d854fd3364",
+    "packed16_single_thread_raw_output": "3c55bbb54cba785d4b5ebc925d96850bdeee3dc931a06a6bdc7625d854fd3364",
+    "packed16_four_thread_raw_output": "3c55bbb54cba785d4b5ebc925d96850bdeee3dc931a06a6bdc7625d854fd3364"
+  },
+  "synthetic": {
+    "seed": 3588,
+    "generator": "numpy.random.default_rng(seed).integers(0,4096,(1552,1936),dtype=uint16)",
+    "border_overrides": [
+      "input[0,:16]=4095",
+      "input[-1,-16:]=0"
+    ],
+    "oracle": "Per Bayer phase, edge-replicated integer [1,2,1] outer-product, (sum+8)//16; post filter disabled",
+    "comparison": "synthetic.json"
+  },
+  "limits": [
+    "Short board acceptance only; no hard real-time or long-run guarantee.",
+    "Denoise and RAW-to-NV12 latency are separate metrics.",
+    "Fixed Gaussian engineering model; no new training/IQ/AE/AWB claim."
+  ]
+}

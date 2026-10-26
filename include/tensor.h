@@ -9,13 +9,18 @@ struct HalfTensor {
     uint16_t* data=nullptr;
     size_t elements=0,row_stride=0,pixel_stride=0,channel_stride=0;
     int width=0,height=0;
+    int channels=4;
+    size_t channel_block=0,block_stride=0;
     size_t offset(int y,int x,int c) const {
-        return size_t(y)*row_stride+size_t(x)*pixel_stride+size_t(c)*channel_stride;
+        const size_t channel=channel_block?(size_t(c)/channel_block)*block_stride+
+            (size_t(c)%channel_block)*channel_stride:size_t(c)*channel_stride;
+        return size_t(y)*row_stride+size_t(x)*pixel_stride+channel;
     }
-    void validate(int tile,int rows=0) const {
+    void validate(int tile,int rows=0,int expected_channels=4) const {
         if(!rows)rows=tile;
-        if(!data || width!=tile || height!=rows || !row_stride || !pixel_stride || !channel_stride ||
-           offset(rows-1,tile-1,3)>=elements) throw std::runtime_error("invalid native FP16 tensor view");
+        if(!data || width!=tile || height!=rows || channels!=expected_channels || !row_stride || !pixel_stride || !channel_stride ||
+           (channel_block && !block_stride) || offset(rows-1,tile-1,channels-1)>=elements)
+            throw std::runtime_error("invalid native FP16 tensor view");
     }
 };
 inline uint16_t float_to_half(float x) {

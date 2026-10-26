@@ -11,9 +11,11 @@ cp "$SDK_ROOT/external/rknpu2/runtime/Linux/librknn_api/aarch64/librknnrt.so" "$
 cp "$ROOT/models/bayer_gaussian.rknn" "$ROOT/models/baseline.json" "$DEST/models/"
 cp "$ROOT/scripts/run_pipeline.py" "$ROOT/scripts/compare_raw.py" "$DEST/scripts/"
 cp "$ROOT/scripts/run_imx623_fast.sh" "$DEST/scripts/"
-if [[ -d "$ROOT/models/fast-rect" ]]; then
-  cp -a "$ROOT/models/fast-rect" "$DEST/models/"
-fi
+for model_dir in fast-rect fast-pack16; do
+  if [[ -d "$ROOT/models/$model_dir" ]]; then
+    cp -a "$ROOT/models/$model_dir" "$DEST/models/"
+  fi
+done
 cp "$ROOT/README.md" "$DEST/"
 cp -a "$ROOT/docs/." "$DEST/docs/"
 (cd "$DEST" && find bin models lib scripts docs -type f -print0 | sort -z | xargs -0 sha256sum > manifest.sha256 && sha256sum README.md >> manifest.sha256)

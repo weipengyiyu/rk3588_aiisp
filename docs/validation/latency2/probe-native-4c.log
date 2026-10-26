@@ -1,0 +1,9 @@
+layout=nc input_bytes=6121472 output_bytes=24485888 output_fmt=2 dims=1,2,784,976,8,
+pre_heap_ms=3.72125
+pre_rknn_ms=3.67431
+run_ms=8.38974
+perf_query_rc=0 kernel_us=8393
+post_heap_ms=7.76258
+post_rknn_ms=7.76659
+post_no_edge_ms=4.50416
+memcpy_to_rknn_ms=0.796429

@@ -54,6 +54,10 @@ class LauncherTests(unittest.TestCase):
             launcher.validate_edge_model(model,976,784,0,4095)
             model.write_bytes(b'wrong model')
             with self.assertRaises(RuntimeError):launcher.validate_edge_model(model,976,784,0,4095)
+            model.write_bytes(b'model');meta['bayer_pack']=2
+            model.with_suffix('.json').write_text(json.dumps(meta))
+            launcher.validate_edge_model(model,976,784,0,4095,2)
+            with self.assertRaises(RuntimeError):launcher.validate_edge_model(model,976,784,0,4095,1)
     def test_imx623_route_and_arbitrary_numbering(self):
         plan=launcher.discover(graphs(),'compact')
         self.assertEqual((plan['capture'],plan['rawrd'],plan['yuv']),('/dev/video71','/dev/video87','/dev/video82'))

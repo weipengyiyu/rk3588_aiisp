@@ -1,0 +1,7 @@
+{
+  "pixels": 3004672,
+  "max_absolute_error_raw12": 2,
+  "mean_absolute_error_raw12": 0.4419420821973247,
+  "tolerance_raw12": 2,
+  "passed": true
+}

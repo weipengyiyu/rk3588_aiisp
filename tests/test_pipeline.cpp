@@ -5,6 +5,7 @@
 #include <limits>
 #include <random>
 #include <stdexcept>
+#include <atomic>
 
 namespace {
 void require(bool ok,const char* message) {if(!ok) throw std::runtime_error(message);}
@@ -48,9 +49,53 @@ public:
     }
     uint64_t calls() const override {return count_;}
 };
+class PackedBackend final : public aiisp::InferenceBackend {
+    int width_,height_;
+    bool gaussian_;
+    std::vector<uint16_t> input_,output_;
+    uint64_t count_=0;
+public:
+    PackedBackend(int w,int h,bool gaussian):width_(w),height_(h),gaussian_(gaussian),
+        input_(size_t(w+3)*h*16),output_(size_t(w+5)*h*16) {}
+    bool native_io() const override {return true;}
+    aiisp::HalfTensor input_tensor() override {
+        return {input_.data(),input_.size(),size_t(width_+3)*8,8,1,width_,height_,16,8,size_t(width_+3)*height_*8};
+    }
+    aiisp::HalfTensor output_tensor() override {
+        return {output_.data(),output_.size(),size_t(width_+5)*8,8,1,width_,height_,16,8,size_t(width_+5)*height_*8};
+    }
+    uint64_t calls() const override {return count_;}
+    void run(const std::vector<float>&,std::vector<float>&) override {throw std::runtime_error("packed backend needs native tensors");}
+    void run_native() override {
+        auto in=input_tensor(),out=output_tensor();
+        const int k[3]={1,2,1};
+        for(int y=0;y<height_;++y)for(int x=0;x<width_;++x)for(int sy=0;sy<2;++sy)for(int sx=0;sx<2;++sx)for(int c=0;c<4;++c) {
+            const int channel=(sy*2+sx)*4+c;
+            if(!gaussian_) {out.data[out.offset(y,x,channel)]=in.data[in.offset(y,x,channel)];continue;}
+            float sum=0;
+            for(int dy=-1;dy<=1;++dy)for(int dx=-1;dx<=1;++dx) {
+                const int yy=std::clamp(y*2+sy+dy,0,height_*2-1),xx=std::clamp(x*2+sx+dx,0,width_*2-1);
+                sum+=k[dy+1]*k[dx+1]*aiisp::half_to_float(in.data[in.offset(yy/2,xx/2,(yy%2*2+xx%2)*4+c)])/16;
+            }
+            out.data[out.offset(y,x,channel)]=aiisp::float_to_half(sum);
+        }
+        ++count_;
+    }
+};
 }
 int main() {
     try {
+        for(int threads:{1,2,4}) {
+            aiisp::RowExecutor pool(threads);
+            std::array<std::atomic<int>,17> visits;
+            for(auto& x:visits)x=0;
+            pool.run(17,[&](int first,int last){for(int row=first;row<last;++row)++visits[row];});
+            for(auto& x:visits)require(x==1,"row pool omitted or duplicated a row");
+            rejects([&]{pool.run(17,[&](int first,int){if(threads==1 || first>0)throw std::runtime_error("worker failure");});});
+            for(auto& x:visits)x=0;
+            pool.run(1,[&](int first,int last){for(int row=first;row<last;++row)++visits[row];});
+            require(visits[0]==1,"row pool failed to recover after worker exception");
+        }
         const aiisp::BayerPattern patterns[]={aiisp::BayerPattern::RGGB,aiisp::BayerPattern::BGGR,
                                              aiisp::BayerPattern::GRBG,aiisp::BayerPattern::GBRG};
         const int expected[][4]={{100,200,300,400},{400,300,200,100},{200,100,400,300},{300,400,100,200}};
@@ -145,6 +190,33 @@ int main() {
             require(std::abs(int(edge[y*10+x])-oracle)<=1,"edge gate does not match independent scalar oracle");
         }
         rejects([&]{aiisp::Postprocessor(c).merge_native(view,{0,0,5,1},10,2,edge);});
+        for(auto pattern:patterns) {
+            aiisp::ProcessingConfig pc;pc.tile=5;pc.tile_height=7;pc.bayer_pack=2;pc.bayer=pattern;pc.cpu_threads=4;
+            aiisp::RawPipeline identity16(pc,std::make_unique<PackedBackend>(pc.tile,pc.rows(),false));
+            const auto exact=identity16.process(image,w,h,metadata);
+            for(size_t i=0;i<image.size();++i)
+                require(std::abs(int(exact.raw[i])-int(image[i]))<=1,"packed16 identity changes Bayer order or partial tiles");
+            require(exact.metadata.sequence==metadata.sequence,"packed metadata changed");
+            aiisp::RawPipeline gaussian16(pc,std::make_unique<PackedBackend>(pc.tile,pc.rows(),true));
+            const auto blurred=gaussian16.process(image,w,h);
+            const int k[3]={1,2,1};
+            for(int y=0;y<h;++y)for(int x=0;x<w;++x) {
+                double sum=0;
+                for(int dy=-1;dy<=1;++dy)for(int dx=-1;dx<=1;++dx) {
+                    const int yy=2*std::clamp(y/2+dy,0,h/2-1)+y%2;
+                    const int xx=2*std::clamp(x/2+dx,0,w/2-1)+x%2;
+                    sum+=image[yy*w+xx]*k[dy+1]*k[dx+1]/16.0;
+                }
+                require(std::abs(int(blurred.raw[y*w+x])-int(std::lround(sum)))<=3,"packed16 Gaussian disagrees with independent full-image oracle");
+            }
+        }
+        aiisp::ProcessingConfig invalid_pack;invalid_pack.bayer_pack=3;
+        rejects([&]{invalid_pack.validate();});
+        aiisp::ProcessingConfig threaded;threaded.tile=9;threaded.cpu_threads=4;
+        aiisp::Postprocessor checked(threaded);
+        std::vector<uint16_t> corrupt(9*9*8,0x7c00),target(20);
+        aiisp::HalfTensor invalid_tensor{corrupt.data(),corrupt.size(),9*8,8,1,9,9};
+        rejects([&]{checked.merge_native(invalid_tensor,{0,0,5,1},10,2,target);});
         std::cout<<"PASS: canonical Bayer order, partial tiles, halo 1/2, scalar oracle, levels, metadata, bypass and hard failures\n";
         return 0;
     } catch(const std::exception& error) {std::cerr<<error.what()<<"\n";return 1;}

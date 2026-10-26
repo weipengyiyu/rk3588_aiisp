@@ -1,0 +1,67 @@
+bin/rk3588_aiisp: OK
+bin/test_pipeline: OK
+bin/test_raw: OK
+docs/BOARD_VALIDATION_20261026.md: OK
+docs/FAST_PATH.md: OK
+docs/LATENCY_ANALYSIS_20261026.md: OK
+docs/MODEL_CONTRACT.md: OK
+docs/validation/final-metrics.json: OK
+docs/validation/latency2/baseline.json: OK
+docs/validation/latency2/final.json: OK
+docs/validation/latency2/kernel-errors.json: OK
+docs/validation/latency2/same-input.json: OK
+docs/validation/latency2/synthetic.json: OK
+docs/validation/latency2/threads-1.json: OK
+docs/validation/latency2/threads-2.json: OK
+docs/validation/latency2/threads-4.json: OK
+docs/VALIDATION.md: OK
+docs/validation/quality.json: OK
+lib/librknnrt.so: OK
+models/baseline.json: OK
+models/bayer_gaussian.rknn: OK
+models/fast-pack16/bayer_gaussian.json: OK
+models/fast-pack16/bayer_gaussian.onnx: OK
+models/fast-pack16/bayer_gaussian.rknn: OK
+models/fast-rect/bayer_gaussian.json: OK
+models/fast-rect/bayer_gaussian.onnx: OK
+models/fast-rect/bayer_gaussian.rknn: OK
+scripts/compare_raw.py: OK
+scripts/run_imx623_fast.sh: OK
+scripts/run_pipeline.py: OK
+README.md: OK
+{
+  "success": true,
+  "mode": "rknn-native",
+  "sensor": "imx623", "width": 1936, "height": 1552,
+  "bayer": "rggb", "raw_bits": 12, "halo": 1,
+  "black_level": 0.000, "white_level": 4095.000,
+  "tile_width": 488, "tile_height": 392,
+  "bayer_pack": 2,
+  "cpu_threads": 4,
+  "post_filter": "edge", "edge_strength": 0.750, "edge_threshold": 96.000,
+  "tiles": 5,
+  "mean_pre_ms": 1.836,
+  "mean_backend_ms": 2.760,
+  "mean_post_ms": 3.003,
+  "denoise_p50_ms": 7.624,
+  "denoise_p95_ms": 12.113,
+  "denoise_max_ms": 12.113,
+  "raw_to_nv12_p50_ms": 23.358,
+  "raw_to_nv12_p95_ms": 31.430,
+  "mean_unpack_ms": 1.312,
+  "mean_pack_ms": 3.957,
+  "mean_isp_ms": 11.035,
+  "completed_frames": 5, "npu_calls": 5,
+  "drained_frames": 0, "sensor_sequence_gaps": 0,
+  "elapsed_ms": 4494.423, "mean_denoise_ms": 8.689,
+  "completed_fps_including_startup": 1.112,
+  "completed_fps_after_first": 31.958,
+  "execution": "live",
+  "yuv_format": "NV12", "yuv_stride": 1936,
+  "error": ""
+}
+{
+  "restored": true,
+  "errors": []
+}
+FINAL PASS: current source package hashes, capture recovery, media topology and CPU governors
