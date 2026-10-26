@@ -1,0 +1,42 @@
+{
+  "board": "192.168.1.61",
+  "sensor": "imx623 7-001a",
+  "width": 1936,
+  "height": 1552,
+  "rknn_runtime": "2.3.0",
+  "rknpu_driver": "0.9.8",
+  "hashes": {
+    "lib/libaiisp_processor.so.1.0.0": "bf692466d057c96d659f185d0e3163d3db71029dd9d2d18a726276c4038711ca",
+    "lib/rsdi/plugins/librsdi_module_camera.so": "b54a8d384b6d3af18cfe4e51a250d1b3cc9cb379d518672e4c8206712c8c7234",
+    "bin/rsdi_sensor_service": "2f7eceec2fd0f89b82a4237a9091747a8e497e7d6aa716f7bea8b2372e3c39b4",
+    "models/fast-pack16/bayer_gaussian.rknn": "38bb73d245c38a11ecb3070eda836a70e9311169370a82f8f410d2a043eb667b",
+    "models/yuv-pack16/luma_gaussian.rknn": "b33d73c3079122b2848dcb2f5027d6d161c65407ccb22b3a43152622c3db8d1b",
+    "models/yuv-pack16-test/luma_gaussian.rknn": "61f34c022915aaa088626f2202a5b9ae1fac22fb873ce9a4f5cf7163e2038e69"
+  },
+  "original_service_restored": true,
+  "original_service_progress": true,
+  "original_config_sha256": "fa3fa69dd5ef7161befe873a3cc23c79699a18f1c83b28450daac74a995e98a7",
+  "profile": {
+    "cpu_affinity": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "governor": "performance",
+    "original_governors": {
+      "/sys/devices/system/cpu/cpufreq/policy4/scaling_governor": "schedutil",
+      "/sys/devices/system/cpu/cpufreq/policy6/scaling_governor": "schedutil"
+    }
+  },
+  "source_baselines": {
+    "rk3588-aiisp": "ddd17f578c849e8c634d90dca9e31eaa1f53659e",
+    "rsdi": "2ccb86f73e9f1f982a6973ad2b6630ba98a4bfcc"
+  },
+  "limitations": [
+    "short functional acceptance",
+    "YUV input is ISP NV12, not a YUV MIPI sensor",
+    "fixed Gaussian model; YUV luma only",
+    "consumer fps is not sensor-to-output latency"
+  ]
+}

@@ -4,6 +4,8 @@
 
 第一轮历史结果（2026-10-26）：已在 RK3588 / IMX623 上验证完整通路，并增加原生 FP16 快速路径。300 帧实测整帧降噪平均 20.446 ms、P95 20.489 ms；此项含 pre、NPU、post，RAW 解包到 NV12 返回的 P95 为 36.865 ms。测试使用可自动恢复的 CPU performance 配置。详见 [快速路径](docs/FAST_PATH.md) 和 [第一轮板端记录](docs/BOARD_VALIDATION_20261026.md)。
 
+新增独立帧处理共享库 `libaiisp_processor.so`，通过版本化 C ABI 向 RSDI 或其他宿主提供 RAW/YUV 处理；接口、模型合同和部署见 [处理插件](docs/PROCESSOR_PLUGIN.md)。
+
 位置：`/home/logic/rk3588-sdk/rk3588_jm/external/rk3588-aiisp`。
 
 在现有 RK3588 SDK 中独立构建的 C++17 工程。基于同级 `imx623-aiisp` 已有原型整理，保留原型，拆出可复用的软件处理核心和 V4L2/ISP 适配库。

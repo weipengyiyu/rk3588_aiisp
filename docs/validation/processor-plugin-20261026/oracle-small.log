@@ -1,0 +1,69 @@
+oracle max_error=0 format=842090322 backend=3
+format=842090322 backend=3 max_error=0 npu_calls=0 total_ms=0.091876
+tensor=raw dims=4 [1,392,488,16,] fmt=1 type=1 quant=2 elements=3060736
+tensor=denoised dims=4 [1,16,392,488,] fmt=0 type=1 quant=2 elements=3060736
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=488
+native layout fmt=2 row_stride=3904 pixel_stride=8 channel_block=8 block_stride=1530368
+native layout fmt=2 row_stride=3904 pixel_stride=8 channel_block=8 block_stride=1530368
+native FP16 cached I/O: channels=16 input_bytes=6121472 output_bytes=6121472
+oracle max_error=2 format=842090322 backend=1
+format=842090322 backend=1 max_error=2 npu_calls=1 total_ms=24.7656
+oracle max_error=0 format=842090306 backend=3
+format=842090306 backend=3 max_error=0 npu_calls=0 total_ms=0.061542
+tensor=raw dims=4 [1,392,488,16,] fmt=1 type=1 quant=2 elements=3060736
+tensor=denoised dims=4 [1,16,392,488,] fmt=0 type=1 quant=2 elements=3060736
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=488
+native layout fmt=2 row_stride=3904 pixel_stride=8 channel_block=8 block_stride=1530368
+native layout fmt=2 row_stride=3904 pixel_stride=8 channel_block=8 block_stride=1530368
+native FP16 cached I/O: channels=16 input_bytes=6121472 output_bytes=6121472
+oracle max_error=2 format=842090306 backend=1
+format=842090306 backend=1 max_error=2 npu_calls=1 total_ms=32.0873
+oracle max_error=0 format=842088770 backend=3
+format=842088770 backend=3 max_error=0 npu_calls=0 total_ms=0.061543
+tensor=raw dims=4 [1,392,488,16,] fmt=1 type=1 quant=2 elements=3060736
+tensor=denoised dims=4 [1,16,392,488,] fmt=0 type=1 quant=2 elements=3060736
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=488
+native layout fmt=2 row_stride=3904 pixel_stride=8 channel_block=8 block_stride=1530368
+native layout fmt=2 row_stride=3904 pixel_stride=8 channel_block=8 block_stride=1530368
+native FP16 cached I/O: channels=16 input_bytes=6121472 output_bytes=6121472
+oracle max_error=2 format=842088770 backend=1
+format=842088770 backend=1 max_error=2 npu_calls=1 total_ms=10.7482
+oracle max_error=0 format=842089031 backend=3
+format=842089031 backend=3 max_error=0 npu_calls=0 total_ms=0.051917
+tensor=raw dims=4 [1,392,488,16,] fmt=1 type=1 quant=2 elements=3060736
+tensor=denoised dims=4 [1,16,392,488,] fmt=0 type=1 quant=2 elements=3060736
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=488
+native layout fmt=2 row_stride=3904 pixel_stride=8 channel_block=8 block_stride=1530368
+native layout fmt=2 row_stride=3904 pixel_stride=8 channel_block=8 block_stride=1530368
+native FP16 cached I/O: channels=16 input_bytes=6121472 output_bytes=6121472
+oracle max_error=2 format=842089031 backend=1
+format=842089031 backend=1 max_error=2 npu_calls=1 total_ms=31.964
+oracle max_error=0 format=842094158 backend=3
+format=842094158 backend=3 max_error=0 npu_calls=0 total_ms=0.004666
+tensor=luma dims=4 [1,32,32,16,] fmt=1 type=1 quant=2 elements=16384
+tensor=denoised dims=4 [1,16,32,32,] fmt=0 type=1 quant=2 elements=16384
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=32
+oracle max_error=1 format=842094158 backend=1
+format=842094158 backend=1 max_error=1 npu_calls=4 total_ms=6.23691
+oracle max_error=0 format=825382478 backend=3
+format=825382478 backend=3 max_error=0 npu_calls=0 total_ms=0.014875
+tensor=luma dims=4 [1,32,32,16,] fmt=1 type=1 quant=2 elements=16384
+tensor=denoised dims=4 [1,16,32,32,] fmt=0 type=1 quant=2 elements=16384
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=32
+oracle max_error=1 format=825382478 backend=1
+format=825382478 backend=1 max_error=1 npu_calls=4 total_ms=5.73773
+oracle max_error=0 format=1448695129 backend=3
+format=1448695129 backend=3 max_error=0 npu_calls=0 total_ms=0.013125
+tensor=luma dims=4 [1,32,32,16,] fmt=1 type=1 quant=2 elements=16384
+tensor=denoised dims=4 [1,16,32,32,] fmt=0 type=1 quant=2 elements=16384
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=32
+oracle max_error=1 format=1448695129 backend=1
+format=1448695129 backend=1 max_error=1 npu_calls=4 total_ms=6.28395
+oracle max_error=0 format=1498831189 backend=3
+format=1498831189 backend=3 max_error=0 npu_calls=0 total_ms=0.013125
+tensor=luma dims=4 [1,32,32,16,] fmt=1 type=1 quant=2 elements=16384
+tensor=denoised dims=4 [1,16,32,32,] fmt=0 type=1 quant=2 elements=16384
+RKNN api=2.3.0 (c949ad889d@2024-11-07T11:35:33) driver=0.9.8 tile=32
+oracle max_error=1 format=1498831189 backend=1
+format=1498831189 backend=1 max_error=1 npu_calls=4 total_ms=5.92995
+PASS: plugin ABI, RAW/YUV oracle, chroma, strides, partial tiles, rejection/reuse

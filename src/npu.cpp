@@ -87,7 +87,8 @@ public:
                 tensor.pixel_stride=a.dims[4];tensor.channel_stride=1;tensor.channel_block=a.dims[4];
                 tensor.block_stride=size_t(a.dims[2])*tensor.row_stride;
             } else throw std::runtime_error("unsupported native FP16 tensor layout or grouped output");
-            tensor.validate(tile,rows,channels);return tensor;
+            tensor.validate(tile,rows,channels);
+            std::cerr<<"native layout fmt="<<a.fmt<<" row_stride="<<tensor.row_stride<<" pixel_stride="<<tensor.pixel_stride<<" channel_block="<<tensor.channel_block<<" block_stride="<<tensor.block_stride<<"\n";return tensor;
         };
         native_input=view(in,input_mem);native_output=view(out,output_mem);
         std::cerr<<"native FP16 cached I/O: channels="<<channels<<" input_bytes="<<input_mem->size<<" output_bytes="<<output_mem->size<<"\n";
@@ -146,15 +147,15 @@ public:
         check(outputs_release(ctx,1,&y),"rknn_outputs_release");
     }
 };
-std::unique_ptr<InferenceBackend> make_backend(const std::string& mode,const std::string& model,int tile,float strength,int tile_height,int bayer_pack) {
+std::unique_ptr<InferenceBackend> make_backend(const std::string& mode,const std::string& model,int tile,float strength,int tile_height,int bayer_pack,int tensor_channels) {
     if(mode=="bypass") return nullptr;
     if(mode!="rknn" && mode!="rknn-native" && mode!="cpu-reference") throw std::runtime_error("invalid inference backend");
     const int rows=tile_height?tile_height:tile;
     if(tile<3 || tile>1024 || rows<3 || rows>1024 || !std::isfinite(strength) || strength<0 || strength>1 ||
-       (bayer_pack!=1 && bayer_pack!=2) || (bayer_pack==2 && mode!="rknn-native") || (mode=="cpu-reference" && rows!=tile))
+       (tensor_channels!=0 && tensor_channels!=1 && tensor_channels!=16) || (tensor_channels!=0 && mode!="rknn-native" && mode!="rknn") || (bayer_pack!=1 && bayer_pack!=2) || (bayer_pack==2 && mode!="rknn-native") || (mode=="cpu-reference" && rows!=tile))
         throw std::runtime_error("invalid inference configuration");
     auto backend=std::make_unique<NativeBackend>();
-    backend->mode=mode; backend->tile=tile; backend->rows=rows;backend->channels=4*bayer_pack*bayer_pack;backend->strength=strength;
+    backend->mode=mode; backend->tile=tile; backend->rows=rows;backend->channels=tensor_channels?tensor_channels:4*bayer_pack*bayer_pack;backend->strength=strength;
     if(mode=="rknn" || mode=="rknn-native") backend->load(model);
     return backend;
 }

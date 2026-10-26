@@ -1,0 +1,15 @@
+{
+  "algorithm": "gaussian-luma",
+  "learned": false,
+  "channels": 16,
+  "yuv_pack": 4,
+  "tile": 488,
+  "tile_height": 392,
+  "halo": 1,
+  "normalization": "Y / 255",
+  "chroma": "preserved",
+  "range": "preserve input coding; no full/limited range conversion",
+  "native_io": "FP16",
+  "onnx_sha256": "c677cc71619bd820efec139545ba3d1c256abe85933a269b025b60c2bd83a658",
+  "rknn_sha256": "b33d73c3079122b2848dcb2f5027d6d161c65407ccb22b3a43152622c3db8d1b"
+}
